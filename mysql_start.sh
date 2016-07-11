@@ -1,9 +1,17 @@
-!/bin/bash
-cd /Percona-Server-5.6.24
-./bin/mysqld_safe --defaults-file=/Percona-Server-5.6.24/my.cnf
+#!/bin/bash
 
-# create user and databases
-./bin/mysql -u root --socket=/Percona-Server-5.6.24/mysqld-39316.sock < ./createDB.sql
-./bin/mysql -h localhost -u root --socket=/Percona-Server-5.6.24/mysqld-39316.sock < ./service_backend.sql
-./bin/mysql -h localhost -u root --socket=/Percona-Server-5.6.24/mysqld-39316.sock < ./portal_backend.sql
-./bin/mysql -h localhost -u root --socket=/Percona-Server-5.6.24/mysqld-39316.sock < ./portal_web.sql
+doSql=true
+
+/Percona-Server-5.6.24/bin/mysqld_safe --defaults-file=/Percona-Server-5.6.24/my.cnf --log-error=/Percona-Server-5.6.24/mysql-39316.err &
+
+while(true); do
+  sleep 6s
+  if $doSql; then
+	/Percona-Server-5.6.24/bin/mysql -h localhost -u root --socket=/Percona-Server-5.6.24/mysqld-39316.sock</Percona-Server-5.6.24/createDB.sql
+	/Percona-Server-5.6.24/bin/mysql -h localhost -u root --socket=/Percona-Server-5.6.24/mysqld-39316.sock</Percona-Server-5.6.24/service_backend.sql
+	/Percona-Server-5.6.24/bin/mysql -h localhost -u root --socket=/Percona-Server-5.6.24/mysqld-39316.sock</Percona-Server-5.6.24/portal_backend.sql
+	/Percona-Server-5.6.24/bin/mysql -h localhost -u root --socket=/Percona-Server-5.6.24/mysqld-39316.sock</Percona-Server-5.6.24/portal_web.sql
+        doSql=false
+  fi
+done
+
