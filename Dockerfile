@@ -6,29 +6,29 @@ COPY libaio-0.3.107-10.el6.x86_64.rpm /libaio-0.3.107-10.el6.x86_64.rpm
 RUN rpm -ivh libaio-0.3.107-10.el6.x86_64.rpm && cd / \
     && tar -xvf Percona-Server-5.6.24.tar && rm -rf Percona-Server-5.6.24.tar \
     && mv Percona-Server-5.6.24-rel72.2-Linux.x86_64 Percona-Server-5.6.24 \
-    && chmod -Rf 777 Percona-Server-5.6.24 \
+    && chmod -Rf 755 Percona-Server-5.6.24 \
     && yum install perl -y \
     && yum install perl-Module-Install.noarch -y \
     && groupadd mysql \
     && useradd -r -g mysql -s /bin/bash mysql
 
-RUN cd /Percona-Server-5.6.24 \
-    && chown -R mysql:mysql . \
-    && scripts/mysql_install_db --explicit_defaults_for_timestamp --user=mysql --port=39316 \
-    && chown -R root . \
-    && chown -R mysql data \
-    && chmod -Rf 777 *
+ENV MYSQL_HOME /Percona-Server-5.6.24
+ENV PORT 39316
 
-COPY createDB.sql /Percona-Server-5.6.24/createDB.sql
-COPY service_backend.sql /Percona-Server-5.6.24/service_backend.sql
-COPY portal_backend.sql /Percona-Server-5.6.24/portal_backend.sql
-COPY portal_web.sql /Percona-Server-5.6.24/portal_web.sql
-COPY my.cnf /Percona-Server-5.6.24/my.cnf
-COPY mysql_start.sh /Percona-Server-5.6.24/mysql_start.sh
-RUN chmod 777 /Percona-Server-5.6.24/*.sql /Percona-Server-5.6.24/*.sh
+RUN cd $MYSQL_HOME \
+    && chown -Rf mysql:mysql $MYSQL_HOME \
+    && scripts/mysql_install_db --basedir=$MYSQL_HOME --datadir=$MYSQL_HOME/data --user=mysql 
 
-WORKDIR /Percona-Server-5.6.24
+COPY createDB.sql $MYSQL_HOME/createDB.sql
+COPY service_backend.sql $MYSQL_HOME/service_backend.sql
+COPY portal_backend.sql $MYSQL_HOME/portal_backend.sql
+COPY portal_web.sql $MYSQL_HOME/portal_web.sql
+COPY my.cnf $MYSQL_HOME/my.cnf
+COPY mysql_start.sh /mysql_start.sh
+RUN chmod 755 $MYSQL_HOME/*.sql /mysql_start.sh $MYSQL_HOME/my.cnf
 
-EXPOSE 39316
+WORKDIR $MYSQL_HOME
 
-CMD ["/Percona-Server-5.6.24/mysql_start.sh"]
+EXPOSE $PORT
+
+CMD ["/mysql_start.sh"]
