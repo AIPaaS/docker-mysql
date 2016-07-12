@@ -2,6 +2,12 @@ create database service_backend;
 create database portal_backend;
 create database portal_web;
 
+GRANT ALL PRIVILEGES ON service_backend.* TO root@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON portal_backend.* TO root@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON portal_web.* TO root@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
 create user dbsuser01 identified by 'dbsuser01';
 GRANT ALL PRIVILEGES ON service_backend.* TO dbsuser01@'%.%.%.%' IDENTIFIED BY 'dbsuser01' WITH GRANT OPTION;
 
