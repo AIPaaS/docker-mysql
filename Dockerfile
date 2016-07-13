@@ -15,6 +15,8 @@ RUN rpm -ivh libaio-0.3.107-10.el6.x86_64.rpm && cd / \
 ENV MYSQL_HOME /Percona-Server-5.6.24
 ENV PORT 39316
 
+WORKDIR $MYSQL_HOME
+
 RUN cd $MYSQL_HOME \
     && chown -Rf mysql:mysql $MYSQL_HOME \
     && scripts/mysql_install_db --basedir=$MYSQL_HOME --datadir=$MYSQL_HOME/data --user=mysql 
@@ -27,7 +29,7 @@ COPY my.cnf $MYSQL_HOME/my.cnf
 COPY mysql_start.sh /mysql_start.sh
 RUN chmod 755 $MYSQL_HOME/*.sql /mysql_start.sh $MYSQL_HOME/my.cnf
 
-WORKDIR $MYSQL_HOME
+VOLUME ["/aifs01/mysqldata"]
 
 EXPOSE $PORT
 

@@ -16,9 +16,9 @@ while(true); do
   if $doSql; then
      ${MYSQL_HOME}/bin/mysqladmin password 123456 -u root --socket=${MYSQL_HOME}/mysqld-${PORT}.sock
      ${MYSQL_HOME}/bin/mysql -h localhost -u root -p123456 --socket=${MYSQL_HOME}/mysqld-${PORT}.sock<${MYSQL_HOME}/createDB.sql
-     ${MYSQL_HOME}/bin/mysql -h localhost -u root -p123456 --socket=${MYSQL_HOME}/mysqld-${PORT}.sock<${MYSQL_HOME}/service_backend.sql
-     ${MYSQL_HOME}/bin/mysql -h localhost -u root -p123456 --socket=${MYSQL_HOME}/mysqld-${PORT}.sock<${MYSQL_HOME}/portal_backend.sql
-     ${MYSQL_HOME}/bin/mysql -h localhost -u root -p123456 --socket=${MYSQL_HOME}/mysqld-${PORT}.sock<${MYSQL_HOME}/portal_web.sql
+#     ${MYSQL_HOME}/bin/mysql -h localhost -u root -p123456 --socket=${MYSQL_HOME}/mysqld-${PORT}.sock<${MYSQL_HOME}/service_backend.sql
+#     ${MYSQL_HOME}/bin/mysql -h localhost -u root -p123456 --socket=${MYSQL_HOME}/mysqld-${PORT}.sock<${MYSQL_HOME}/portal_backend.sql
+#     ${MYSQL_HOME}/bin/mysql -h localhost -u root -p123456 --socket=${MYSQL_HOME}/mysqld-${PORT}.sock<${MYSQL_HOME}/portal_web.sql
      doSql=false
   fi
 done
